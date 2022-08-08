@@ -15,7 +15,7 @@ app.put('/movies', controller.updateMovie);
 app.delete('/movies/:id', controller.deleteMovie);
 
 app.listen(3000, () => {
-    console.log('A aplicação está rodando na porta 3000 configurada');
+    console.log('A aplicação está rodando na porta 3000');
     console.log('Acesse em: http://localhost:3000');
 });
 
