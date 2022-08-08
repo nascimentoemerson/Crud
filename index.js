@@ -3,16 +3,13 @@ const cors = require('cors');
 
 const app = express();
 
-const controller = require('./controllers/movies.controller');
+const moviesRoutes = require("./routes/movies.route")
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/', controller.findAllMovies);
-app.get('/movies/:id', controller.findMovieById);
-app.post('/movies', controller.createMovie);
-app.put('/movies', controller.updateMovie);
-app.delete('/movies/:id', controller.deleteMovie);
+
+app.use("/movies", moviesRoutes)
 
 app.listen(3000, () => {
     console.log('A aplicação está rodando na porta 3000');
