@@ -35,4 +35,4 @@ module.exports = {
     createMovie,
     updateMovie,
     deleteMovie,
-};
+}; 
