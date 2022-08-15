@@ -1,31 +1,31 @@
 const moviesService = require('../services/movies.service');
 
-function findAllMovies(req, res) {
-    const allMovies = moviesService.findAllMovies();
+async function findAllMovies(req, res) {
+    const allMovies = await moviesService.findAllMovies();
     res.send(allMovies);
 }
 
-function findMovieById(req, res) {
+async function findMovieById(req, res) {
     const id = req.params.id;
-    const uniqueMovie = moviesService.findMovieById(id);
+    const uniqueMovie = await moviesService.findMovieById(id);
     res.send(uniqueMovie);
 }
 
-function createMovie(req, res) {
+async function createMovie(req, res) {
     const movie = req.body;
-    const movieCreated = moviesService.createMovie(movie);
+    const movieCreated = await moviesService.createMovie(movie);
     res.send(movieCreated);
 }
 
-function updateMovie(req, res) {
+async function updateMovie(req, res) {
     const movie = req.body;
-    const movieUpdated = moviesService.updateMovie(movie);
+    const movieUpdated = await moviesService.updateMovie(movie);
     res.send(movieUpdated);
 }
 
-function deleteMovie(req, res) {
+async function deleteMovie(req, res) {
     const id = req.params.id;
-    const deletedMovie = moviesService.deleteMovie(id);
+    const deletedMovie = await moviesService.deleteMovie(id);
     res.send(deletedMovie);
 }
 

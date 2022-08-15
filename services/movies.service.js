@@ -1,28 +1,23 @@
 const movies = require('../mocks/movies');
+const Movie = require("../database/models/movieSchema")
 const MovieEntity = require('../entities/movies.entity');
 const ActorEntity = require('../entities/actors.entity');
 
-function findAllMovies() {
-    return movies;
+async function findAllMovies() {
+    return await Movie.find();
 }
 
-function findMovieById(id) {
-    let movieFinded;
-
-    movies.map((movie) => {
-        if (movie.id === id) {
-            movieFinded = movie;
-        }
-    });
+async function findMovieById(id) {
+    const movieFinded = await Movie.findOne({id: id})
     return movieFinded;
 }
 
-function createMovie(movie) {
+async function createMovie(movie) {
     const newMovie = new MovieEntity(movie);
-
     newMovie.validate();
+
     if (!movie.actors) {
-        throw new Error('Atores precisam ser informado');
+        throw new Error('Atores precisam ser informados');
     }
     const newActors = [];
     movie.actors.map((actor) => {
@@ -35,17 +30,21 @@ function createMovie(movie) {
         ...newMovie.getMovie(),
         actors: newActors,
     };
-    movies.push(newMovieValidated);
-    return newMovieValidated;
+
+    const movieCreated = await Movie.create(newMovieValidated);
+    return movieCreated
 }
 
-function updateMovie(movie) {
+async function updateMovie(movie) {
     const updateMovie = new MovieEntity(movie);
     updateMovie.validate();
+
     if (!movie.actors) {
         throw new Error('Atores precisam ser informado');
     }
+
     const updatedActors = [];
+
     movie.actors.map((actor) => {
         const updatedActor = new ActorEntity(actor);
         updatedActor.validate();
@@ -56,23 +55,16 @@ function updateMovie(movie) {
         ...updateMovie.getMovie(),
         actors: updatedActors,
     };
-
-    movies.map((eachMovie, index) => {
-        if (eachMovie.id === updateMovie.id) {
-            movies.splice(index, 1, updatedMovie);
-        }
-    });
-    return updatedMovie;
+    const movieUpdatedInDataBase = await Movie.findOneAndUpdate(
+        {id: movie.id},
+        updatedMovie,
+        {new:true}
+    )
+    return movieUpdatedInDataBase;
 }
 
-function deleteMovie(id) {
-    let movieFinded;
-    movies.map((movie, index) => {
-        if (movie.id === id) {
-            movieFinded = movie;
-            movies.splice(index, 1);
-        }
-    });
+async function deleteMovie(id) {
+    const movieFinded = await Movie.findOneAndDelete({id: id})
 
     return movieFinded;
 }
